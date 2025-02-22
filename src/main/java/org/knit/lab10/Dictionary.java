@@ -1,24 +1,65 @@
 package org.knit.lab10;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Dictionary<K, V> {
-    private final Map<K, V> map;
+    private final ArrayList<Pair<K, V>> entries;
 
     public Dictionary() {
-        this.map = new HashMap<>();
+        this.entries = new ArrayList<>();
     }
 
     public void put(K key, V value) {
-        map.put(key, value);
+        for (Pair<K, V> pair : entries) {
+            if (Objects.equals(pair.getFirst(), key)) {
+                pair.setSecond(value);
+                return;
+            }
+        }
+        entries.add(new Pair<>(key, value));
     }
 
     public V get(K key) {
-        return map.get(key);
+        for (Pair<K, V> pair : entries) {
+            if (Objects.equals(pair.getFirst(), key)) {
+                return pair.getSecond();
+            }
+        }
+        throw new IllegalArgumentException("Ключ \"" + key + "\" не найден в словаре.");
     }
 
     public void remove(K key) {
-        map.remove(key);
+        for (int i = 0; i < entries.size(); i++) {
+            if (Objects.equals(entries.get(i).getFirst(), key)) {
+                entries.remove(i);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Ключ \"" + key + "\" не найден для удаления.");
+    }
+
+    public boolean containsKey(K key) {
+        for (Pair<K, V> pair : entries) {
+            if (Objects.equals(pair.getFirst(), key)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<K> keys() {
+        ArrayList<K> keys = new ArrayList<>();
+        for (Pair<K, V> pair : entries) {
+            keys.add(pair.getFirst());
+        }
+        return keys;
+    }
+
+    public ArrayList<V> values() {
+        ArrayList<V> values = new ArrayList<>();
+        for (Pair<K, V> pair : entries) {
+            values.add(pair.getSecond());
+        }
+        return values;
     }
 
 }
