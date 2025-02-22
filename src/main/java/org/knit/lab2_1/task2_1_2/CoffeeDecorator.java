@@ -1,4 +1,4 @@
-package org.knit.lab2_1;
+package org.knit.lab2_1.task2_1_2;
 
 abstract class CoffeeDecorator implements Coffee {
     protected Coffee coffee;

@@ -1,4 +1,4 @@
-package org.knit.lab2_1;
+package org.knit.lab2_1.task2_1_2;
 
 class Chocolate extends CoffeeDecorator {
     public Chocolate(Coffee coffee) {
