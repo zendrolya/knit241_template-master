@@ -1,26 +1,27 @@
 package org.knit.lab2_2.task2_2_5;
 
-import org.knit.lab2_2.task2_2_3.RailwayCrossing;
+public class Car implements Runnable {
+    private final int carId;
 
-class Car implements Runnable {
-    private final TrafficLight tl;
-
-    public Car(TrafficLight tl) {
-        this.tl = tl;
+    public Car(int id) {
+        this.carId = id;
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-                tl.greenLight();
-                tl.waitLight();
-                System.out.println(Thread.currentThread().getName() + " едет на зеленый");
-                Thread.sleep(5000);
-                tl.redLight();
+                synchronized (TrafficLight.getLock()) {
+                    while (!TrafficLight.isGreen()) {
+                        System.out.println("🚗 Машина " + carId + " ожидает на красном свете...");
+                        TrafficLight.getLock().wait();
+                    }
+                    System.out.println("🚗 Машина " + carId + " проезжает на зеленый.");
+                }
+                Thread.sleep(3000);
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
         }
     }
 }
