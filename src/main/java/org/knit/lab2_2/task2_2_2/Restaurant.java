@@ -14,7 +14,7 @@ public class Restaurant {
         }
         mealsQueue.add(name);
         System.out.println("Повар приготовил " + name);
-        Thread.sleep(2000);
+        Thread.sleep(500);
         notify();
     }
 
@@ -24,5 +24,6 @@ public class Restaurant {
             wait();
         }
         System.out.println("Официант подал " + mealsQueue.poll());
+        notify();
     }
 }

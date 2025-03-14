@@ -1,27 +1,26 @@
 package org.knit.lab2_2.task2_2_3;
 
 class Car implements Runnable {
-    private final int carId;
+    private final RailwayCrossing crossing;
 
-    public Car(int id) {
-        this.carId = id;
+    public Car(RailwayCrossing crossing) {
+        this.crossing = crossing;
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-                synchronized (block) {
-                    while (trainPassing) {
-                        System.out.println("🚗 Машина " + carId + " ждет, поезд едет...");
-                        block.wait();
-                    }
-                    System.out.println("🚗 Машина " + carId + " проезжает переезд.");
-                }
-                Thread.sleep(3000);
+                System.out.println(Thread.currentThread().getName() + " едет к переезду.");
+                Thread.sleep(1500);
+
+                crossing.waitForTrain();
+
+                System.out.println(Thread.currentThread().getName() + " проезжает переезд.");
+                Thread.sleep(1500);
             }
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
         }
     }
 }

@@ -1,34 +1,24 @@
 package org.knit.lab2_2.task2_2_3;
 
-public class Train implements Runnable {
-    private Object block = new Object();
-    private boolean trainPassing = false;
+class Train implements Runnable {
+    private final RailwayCrossing crossing;
 
-    public void Train(boolean trainPassing, Object block) {
-        this.trainPassing = trainPassing;
-        this.block = block;
+    public Train(RailwayCrossing crossing) {
+        this.crossing = crossing;
     }
+
     @Override
     public void run() {
         try {
             while (true) {
                 Thread.sleep(5000);
-                synchronized(block) {
-                    trainPassing = true;
-                    System.out.println("🚆 Поезд приближается! Машины должны остановиться.");
-                }
+                crossing.trainArrived();
 
-                Thread.sleep(5000);
-                synchronized(block) {
-                    trainPassing = false;
-                    System.out.println("✅ Поезд проехал. Машины могут ехать.");
-                    block.notifyAll();
-                }
-
-                Thread.sleep(10000);
+                Thread.sleep(3000);
+                crossing.trainDeparted();
             }
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
         }
     }
 }
